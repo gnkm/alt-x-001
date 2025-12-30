@@ -1,0 +1,41 @@
+name: リファクタリング (Refactoring)
+description: コードの品質改善や技術的負債の解消
+title: "refactor: "
+labels: ["refactor", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        コード品質向上のための提案ありがとうございます！
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 概要 (Summary)
+      description: 何をどのように改善したいか、簡潔に記述してください
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected_areas
+    attributes:
+      label: 変更箇所 (Affected Areas)
+      description: 影響を受けるファイルやモジュールを記述してください
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: 期待されるメリット (Benefits)
+      description: 可読性の向上、パフォーマンス改善など
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: リスク (Risks)
+      description: 変更に伴うリスクや懸念点があれば記述してください
+    validations:
+      required: false

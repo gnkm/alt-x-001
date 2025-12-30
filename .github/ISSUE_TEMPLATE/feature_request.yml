@@ -1,0 +1,65 @@
+name: 機能リクエスト (Feature Request)
+description: 新しい機能や改善の提案
+title: "feat: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提案ありがとうございます！
+        以下の項目に入力してください。
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 概要 (Summary)
+      description: 提案する機能や改善の簡潔な説明を記述してください
+      placeholder: "例: PDFのテキスト選択機能を改善してほしい"
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景 (Background)
+      description: なぜこの機能が必要なのか、どのような問題を解決するのかを記述してください
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: 期待される動作 (Expected Behavior)
+      description: ユーザーがこの機能を使用した際に期待される結果を記述してください
+    validations:
+      required: false
+
+  - type: textarea
+    id: specs
+    attributes:
+      label: 仕様 (Specs)
+      description: 具体的な仕様や振る舞いについて記述してください
+      placeholder: |
+        - [ ] テキストを選択したときにメニューを表示する
+        - [ ] 右クリックでもコピーできるようにする
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: 受け入れ条件 (Acceptance Criteria)
+      description: 実装が完了したと判断するための具体的な条件やテストケースを記述してください (Gherkin形式推奨)
+      placeholder: |
+        - [ ] Given 〇〇な状態で When 〇〇したとき Then 〇〇になること
+        - [ ] エラー時に特定のメッセージが表示されること
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 備考 (Notes)
+      description: その他、参考情報やスクリーンショットなどがあれば記述してください
+    validations:
+      required: false

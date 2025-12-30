@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    security-misc:
+      run: gitleaks protect --verbose --staged
+    osv-scanner:
+      tags: security
+      run: |
+        # パッケージファイルが存在する場合のみ osv-scanner を実行
+        if find . -maxdepth 1 -name "uv.lock" -o -name "package.json" -o -name "package-lock.json" -o -name "yarn.lock" -o -name "pnpm-lock.yaml" -o -name "go.mod" -o -name "go.sum" -o -name "Cargo.lock" -o -name "Gemfile.lock" -o -name "composer.lock" 2>/dev/null | grep -q .; then
+          osv-scanner -r .
+        else
+          echo "No package files found, skipping osv-scanner"
+          exit 0
+        fi
