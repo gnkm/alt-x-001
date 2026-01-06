@@ -1,0 +1,9 @@
+task_groups:
+  - name: User Model and Seed Data
+    claude_code_subagent: implementer
+  - name: Authentication API Endpoints
+    claude_code_subagent: implementer
+  - name: Authentication UI and State Management
+    claude_code_subagent: implementer
+  - name: Test Review & Gap Analysis
+    claude_code_subagent: implementation-verifier
