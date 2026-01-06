@@ -1,3 +1,3 @@
-# Alt X Template
+# Alt X
 
-[X](X.com)のクローンを実装するためのテンプレートです。
+Agent OS の性能確認。
