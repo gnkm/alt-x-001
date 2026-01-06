@@ -1,0 +1,69 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: altx-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-altx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altx_password}
+      POSTGRES_DB: ${POSTGRES_DB:-altx_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altx} -d ${POSTGRES_DB:-altx_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: altx-backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-altx}:${POSTGRES_PASSWORD:-altx_password}@db:5432/${POSTGRES_DB:-altx_db}
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-here-change-in-production}
+      ALGORITHM: ${ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS:-7}
+      BACKEND_HOST: 0.0.0.0
+      BACKEND_PORT: 8000
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL:-}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/src:/app/src:cached
+      - ./uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        uv run alembic upgrade head &&
+        uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+
+  # React Frontend (Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: altx-frontend
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src:cached
+      - ./frontend/public:/app/public:cached
+      - ./frontend/index.html:/app/index.html:cached
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+
